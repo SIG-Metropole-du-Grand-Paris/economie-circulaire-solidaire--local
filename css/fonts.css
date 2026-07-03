@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Sen-Regular";
+  src: url("../fonts/Sen-Regular.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "Sen-Bold";
+  src: url("../fonts/Sen-Bold.ttf") format("truetype");
+}

@@ -1,0 +1,150 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+/* ------------------ CARTE ------------------ */ 
+#idMAP {
+	height: 100%;
+	width: 100%;
+}
+
+/* ------------------ LEGENDE ------------------ */ 
+.legend {
+  font-family: "Sen-Regular", sans-serif !important;
+  font-size: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-size: 12px;
+  max-width: 220px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+}
+
+.legend.collapsed {
+  padding: 6px;
+  width: auto;
+}
+
+.legend.collapsed #legend-content {
+  display: none;
+}
+
+.legend .box {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #ccc;
+}
+
+.legend-title {
+  font-family: "Sen-Bold", sans-serif !important;
+  font-size: 16px;
+  font-weight: 700;
+  color: #273f55;
+  margin-bottom: 6px;
+}
+
+/* ------------------ BOUTON DE LA LEGENDE ------------------ */ 
+.legend-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #273f55;
+  border-radius: 6px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+}
+
+/* image bouton legende */ 
+.legend-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+/*style bouton ouvert et fermé */ 
+.open-btn {
+  width: 48px;
+  height: 48px;
+
+  background: #273f55;
+  border: 2px solid white;
+
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.close-btn {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  width: 100%;
+  height: 36px;
+  border: 2px solid white;
+}
+
+/*style bouton quand survol */ 
+.legend-btn:hover {
+  background: #1f2f40;
+}
+
+.legend-btn:active {
+  transform: scale(0.95);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.legend-item input {
+  cursor: pointer;
+}
+
+.legend-item input:not(:checked) + .box {
+  opacity: 0.3;
+}
+
+.legend .box {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+
+
+
+/*POPUP*/ 
+
+.leaflet-popup-content {
+  font-family: "Sen-Regular", sans-serif;
+  font-size: 14px;
+  color: #273f55;
+}
