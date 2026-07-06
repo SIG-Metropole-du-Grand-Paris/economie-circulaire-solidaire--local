@@ -210,7 +210,7 @@ Promise.all([
   function getPolygonStyle(feature, type = "commune") {
     return {
       fillColor: getColor(feature.properties.thematique),
-      fillOpacity: type === "ept" ? 0.3 : 0.6,
+      fillOpacity: type === "ept" ? 0.2 : 0.6,
       color: "transparent",
       weight: 0
     };
@@ -250,7 +250,7 @@ Promise.all([
         layer.setStyle({
           weight: 2,
           color: "#ffee00",
-          fillOpacity: 0.6
+          fillOpacity: 0.9
         });
 
         selectedPolygonLayer = layer;
@@ -312,7 +312,7 @@ Promise.all([
         layer.setStyle({
           weight: 2,
           color: "#ffee00",
-          fillOpacity: 0.8
+          fillOpacity: 0.9
         });
 
         selectedPolygonLayer = layer;
@@ -416,6 +416,25 @@ loadData("data_init/data_suivi_ecs_adresse.geojson")
           <b>Année:</b> ${feature.properties.annee}<br>
           <b>Adresse:</b> ${feature.properties.adresse}
         `);
+
+        layer.on("mouseover", function () {
+
+          if (layer !== selectedPointLayer) {
+            layer.setStyle({
+              radius: 7
+            });
+          }
+        });
+
+        layer.on("mouseout", function () {
+
+          if (layer !== selectedPointLayer) {
+            layer.setStyle({
+              radius: 5
+            });
+          }
+
+        });
 
         layer.on("click", function () {
 
