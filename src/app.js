@@ -22,11 +22,11 @@ function getColor(thematique) {
     default:
       return "#999999";
   }
-}
+};
 
 function updateLayerOrder() {
   if (ecsPointLayer) ecsPointLayer.bringToFront();
-}
+};
 
 function resetSelection() {
   if (selectedPointLayer) {
@@ -38,7 +38,32 @@ function resetSelection() {
     });
     selectedPointLayer = null;
   }
+};
+
+function getPolygonStyle(feature) {
+  return {
+    fillPattern: getPattern(getColor(feature.properties.thematique)),
+    fillOpacity: 0.2,
+    color: "transparent",
+    weight: 0
+  };
 }
+
+function resetPolygon(layer) {
+  if (layer && layer.defaultStyle) {
+    layer.setStyle(layer.defaultStyle);
+  }
+};
+
+function getPattern(color) {
+  return new L.StripePattern({
+    weight: 1,
+    spaceWeight: 4,
+    color: color,
+    opacity: 1,
+    angle: 45
+  });
+};
 
 
 /* -------------------------------------------------------------------------- */
@@ -56,6 +81,24 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 L.control.scale({ position: "bottomright", imperial: false }).addTo(map);
 L.control.zoom({ position: "topright" }).addTo(map);
 
+const patternCache = {};
+
+function getPattern(color) {
+  if (patternCache[color]) return patternCache[color];
+
+  const pattern = new L.StripePattern({
+    weight: 2,
+    spaceWeight: 4,
+    color: color,
+    opacity: 1,
+    angle: 45
+  });
+
+  pattern.addTo(map);
+  patternCache[color] = pattern;
+
+  return pattern;
+}
 
 /* -------------------------------------------------------------------------- */
 /*                              VARIABLES                                     */
@@ -207,20 +250,6 @@ Promise.all([
   mgpInit
 ]).then(([ecsEptPolygon, ecsCommunePolygon, comPolygon, eptPolygon, mgpPolygon]) => {
 
-  function getPolygonStyle(feature, type = "commune") {
-    return {
-      fillColor: getColor(feature.properties.thematique),
-      fillOpacity: type === "ept" ? 0.2 : 0.6,
-      color: "transparent",
-      weight: 0
-    };
-  }
-
-  function resetPolygon(layer) {
-    if (layer && layer.defaultStyle) {
-      layer.setStyle(layer.defaultStyle);
-    }
-  }
 
   /* ========================= ECS EPT ========================= */
   const ecsEptPolygonLayer = new L.geoJSON(ecsEptPolygon, {
