@@ -40,29 +40,20 @@ function resetSelection() {
   }
 };
 
-function getPolygonStyle(feature) {
+
+function getPolygonStyle() {
   return {
-    fillPattern: getPattern(getColor(feature.properties.thematique)),
-    fillOpacity: 0.2,
+    fillPattern: getPattern(),
+    fillOpacity: 0.5,
     color: "transparent",
     weight: 0
   };
-}
+};
 
 function resetPolygon(layer) {
   if (layer && layer.defaultStyle) {
     layer.setStyle(layer.defaultStyle);
   }
-};
-
-function getPattern(color) {
-  return new L.StripePattern({
-    weight: 1,
-    spaceWeight: 4,
-    color: color,
-    opacity: 1,
-    angle: 45
-  });
 };
 
 
@@ -82,23 +73,24 @@ L.control.scale({ position: "bottomright", imperial: false }).addTo(map);
 L.control.zoom({ position: "topright" }).addTo(map);
 
 const patternCache = {};
+const BEIGE = "#d7c2a3";
 
-function getPattern(color) {
-  if (patternCache[color]) return patternCache[color];
+function getPattern() {
+  if (patternCache["beige"]) return patternCache["beige"];
 
   const pattern = new L.StripePattern({
     weight: 2,
     spaceWeight: 4,
-    color: color,
+    color: BEIGE,
     opacity: 1,
     angle: 45
   });
 
   pattern.addTo(map);
-  patternCache[color] = pattern;
+  patternCache["beige"] = pattern;
 
   return pattern;
-}
+};
 
 /* -------------------------------------------------------------------------- */
 /*                              VARIABLES                                     */
@@ -254,9 +246,7 @@ Promise.all([
   /* ========================= ECS EPT ========================= */
   const ecsEptPolygonLayer = new L.geoJSON(ecsEptPolygon, {
 
-    style: function (feature) {
-      return getPolygonStyle(feature, "ept");
-    },
+    style: getPolygonStyle,
 
     onEachFeature: function (feature, layer) {
 
@@ -279,7 +269,7 @@ Promise.all([
         layer.setStyle({
           weight: 2,
           color: "#ffee00",
-          fillOpacity: 0.9
+          fillOpacity:1
         });
 
         selectedPolygonLayer = layer;
@@ -293,7 +283,7 @@ Promise.all([
 
       layer.on("mouseover", function () {
         if (layer !== selectedPolygonLayer) {
-          layer.setStyle({ fillOpacity: 0.5 });
+          layer.setStyle({ fillOpacity: 0.8 });
         }
       });
 
@@ -315,9 +305,7 @@ Promise.all([
   /* ========================= ECS COMMUNES ========================= */
   const ecsCommunePolygonLayer = new L.geoJSON(ecsCommunePolygon, {
 
-    style: function (feature) {
-      return getPolygonStyle(feature, "commune");
-    },
+    style: getPolygonStyle,
 
     onEachFeature: function (feature, layer) {
 
@@ -341,7 +329,7 @@ Promise.all([
         layer.setStyle({
           weight: 2,
           color: "#ffee00",
-          fillOpacity: 0.9
+          fillOpacity: 1
         });
 
         selectedPolygonLayer = layer;
@@ -355,7 +343,7 @@ Promise.all([
 
       layer.on("mouseover", function () {
         if (layer !== selectedPolygonLayer) {
-          layer.setStyle({ fillOpacity: 0.9 });
+          layer.setStyle({ fillOpacity: 0.8 });
         }
       });
 
