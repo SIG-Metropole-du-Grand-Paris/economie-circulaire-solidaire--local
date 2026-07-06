@@ -73,6 +73,7 @@ function configurePolygon(feature, layer, type) {
       fillOpacity: 1
     });
 
+
     selectedPolygonLayer = layer;
     layer.openPopup();
   });
@@ -132,10 +133,15 @@ function getPolygonStyle() {
 };
 
 function resetPolygon(layer) {
-  if (layer && layer.defaultStyle) {
-    layer.setStyle(layer.defaultStyle);
-  }
-};
+  if (!layer) return;
+
+  layer.setStyle({
+    fillOpacity: 0.5,
+    color: "transparent",
+    weight: 0,
+    fillPattern: getPattern()
+  });
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -173,6 +179,20 @@ function getPattern() {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                                PANES                                       */
+/* -------------------------------------------------------------------------- */
+
+map.createPane("ecsFillPane");
+map.getPane("ecsFillPane").style.zIndex = 350;
+
+map.createPane("adminPane");
+map.getPane("adminPane").style.zIndex = 450;
+
+
+map.createPane("ecsPointPane");
+map.getPane("ecsPointPane").style.zIndex = 650;
+
+/* -------------------------------------------------------------------------- */
 /*                              VARIABLES                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -205,9 +225,8 @@ Promise.all([
 
   /* ========================= ECS EPT ========================= */
   const ecsEptPolygonLayer = L.geoJSON(ecsEptPolygon, {
-
+    pane: "ecsFillPane",
     style: getPolygonStyle,
-
     onEachFeature: (feature, layer) => {
       configurePolygon(feature, layer, "ept");
     }
@@ -217,16 +236,18 @@ Promise.all([
 
   /* ========================= ECS COMMUNES ========================= */
   const ecsCommunePolygonLayer = L.geoJSON(ecsCommunePolygon, {
-
+    pane: "ecsFillPane",
     style: getPolygonStyle,
-
     onEachFeature: (feature, layer) => {
       configurePolygon(feature, layer, "commune");
     }
 
   });
 
+/* ========================= LIMITES ADMINISTRATIVES ========================= */
   const comPolygonLayer = new L.geoJSON(comPolygon, {
+    pane: "adminPane",
+    interactive: false,
     style: {
       fillColor: "transparent",
       fillOpacity: 0,
@@ -236,6 +257,8 @@ Promise.all([
   }).addTo(map);
 
   const eptPolygonLayer = new L.geoJSON(eptPolygon, {
+    pane: "adminPane",
+    interactive: false,
     style: {
       fillColor: "transparent",
       fillOpacity: 0,
@@ -245,6 +268,8 @@ Promise.all([
   }).addTo(map);
 
   const mgpPolygonLayer = new L.geoJSON(mgpPolygon, {
+    pane: "adminPane",
+    interactive: false,
     style: {
       fillColor: "transparent",
       fillOpacity: 0,
@@ -254,6 +279,8 @@ Promise.all([
   }).addTo(map);
 
   const mgpPolygonLayerbis = new L.geoJSON(mgpPolygon, {
+    pane: "adminPane",
+    interactive: false,
     style: {
       fillColor: "transparent",
       fillOpacity: 0,
@@ -271,7 +298,7 @@ Promise.all([
 });
 
 /* -------------------------------------------------------------------------- */
-/*                          POINTS ECS                                       */
+/*                                  POINT                                     */
 /* -------------------------------------------------------------------------- */
 
 loadData("data_init/data_suivi_ecs_adresse.geojson")
@@ -281,6 +308,7 @@ loadData("data_init/data_suivi_ecs_adresse.geojson")
 
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
+          pane: "ecsPointPane",
           radius: 5,
           color: "#ffffff",
           weight: 1,
