@@ -1,6 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                FONCTIONS                                   */
 /* -------------------------------------------------------------------------- */
+const BEIGE = "#d7c2a3";
 
 async function loadData(chemin) {
   const response = await fetch(chemin);
@@ -41,6 +42,86 @@ function resetSelection() {
 };
 
 
+function configurePolygon(feature, layer, type) {
+
+  const theme = feature.properties.thematique;
+
+  layer.defaultStyle = getPolygonStyle();
+
+  // ---------- Popup ----------
+  const territoire = type === "ept"
+    ? `<b>EPT :</b> ${feature.properties.lib_ept || "Non renseigné"}`
+    : `<b>Ville :</b> ${feature.properties.lib_com || "Non renseigné"}`;
+
+  layer.bindPopup(`
+    <b>Nom :</b> ${feature.properties.nom_projet_carto || "Non renseigné"}<br>
+    ${territoire}<br>
+    <b>Description :</b> ${feature.properties.description || "Non renseigné"}<br>
+    <b>Année :</b> ${feature.properties.annee || "Non renseigné"}
+  `);
+
+  // ---------- Sélection ----------
+  layer.on("click", () => {
+
+    if (selectedPolygonLayer) {
+      resetPolygon(selectedPolygonLayer);
+    }
+
+    layer.setStyle({
+      weight: 2,
+      color: "#ffee00",
+      fillOpacity: 1
+    });
+
+    selectedPolygonLayer = layer;
+    layer.openPopup();
+  });
+
+  layer.on("popupclose", () => {
+    resetPolygon(layer);
+    selectedPolygonLayer = null;
+  });
+
+  // ---------- Survol ----------
+  layer.on("mouseover", () => {
+    if (layer !== selectedPolygonLayer) {
+      layer.setStyle({
+        fillOpacity: 0.8
+      });
+    }
+  });
+
+  layer.on("mouseout", () => {
+    if (layer !== selectedPolygonLayer) {
+      resetPolygon(layer);
+    }
+  });
+
+  // ---------- Classement par thème ----------
+  if (!polygonLayersByTheme[theme]) {
+    polygonLayersByTheme[theme] = L.layerGroup();
+  }
+
+  polygonLayersByTheme[theme].addLayer(layer);
+
+  const center = layer.getBounds().getCenter();
+
+  const marker = L.circleMarker(center, {
+    radius:3.5,
+    fillColor: "#ffffff",
+    color: getColor(theme),
+    weight: 3,
+    fillOpacity: 1
+  });
+
+  marker.bindPopup(layer.getPopup());
+
+  marker.on("click", () => layer.fire("click"));
+
+  polygonLayersByTheme[theme].addLayer(marker);
+};
+
+
 function getPolygonStyle() {
   return {
     fillPattern: getPattern(),
@@ -73,7 +154,6 @@ L.control.scale({ position: "bottomright", imperial: false }).addTo(map);
 L.control.zoom({ position: "topright" }).addTo(map);
 
 const patternCache = {};
-const BEIGE = "#d7c2a3";
 
 function getPattern() {
   if (patternCache["beige"]) return patternCache["beige"];
@@ -105,126 +185,6 @@ let polygonLayersByTheme = {};
 
 
 /* -------------------------------------------------------------------------- */
-/*                                LEGEND                                     */
-/* -------------------------------------------------------------------------- */
-
-const legend = L.control({ position: "bottomleft" });
-
-legend.onAdd = function () {
-
-  const div = L.DomUtil.create("div", "legend");
-
-  div.innerHTML = `
-    <div id="legend-content">
-
-      <b class="legend-title">Thématiques</b>
-
-      <label class="legend-item">
-        <input type="checkbox" checked data-theme="Deuxième vie des objets">
-        <span class="box" style="background:${getColor("Deuxième vie des objets")}"></span>
-        Deuxième vie des objets
-      </label>
-
-      <label class="legend-item">
-        <input type="checkbox" checked data-theme="BTP Centre de réemploi de matériaux du BTP">
-        <span class="box" style="background:${getColor("BTP Centre de réemploi de matériaux du BTP")}"></span>
-        Réemploi BTP
-      </label>
-
-      <label class="legend-item">
-        <input type="checkbox" checked data-theme="BTP Construction et aménagement circulaire">
-        <span class="box" style="background:${getColor("BTP Construction et aménagement circulaire")}"></span>
-        Construction circulaire
-      </label>
-
-      <label class="legend-item">
-        <input type="checkbox" checked data-theme="BTP Terres végétales recyclées">
-        <span class="box" style="background:${getColor("BTP Terres végétales recyclées")}"></span>
-        Terres végétales
-      </label>
-
-      <label class="legend-item">
-        <input type="checkbox" checked data-theme="Alimentation et biodéchets">
-        <span class="box" style="background:${getColor("Alimentation et biodéchets")}"></span>
-        Alimentation / biodéchets
-      </label>
-
-    </div>
-
-    <button class="legend-btn open-btn">
-      <img src="image/legend.svg" />
-    </button>
-
-    <button class="legend-btn close-btn" style="display:none;">
-      Fermer
-    </button>
-  `;
-
-  const content = div.querySelector("#legend-content");
-  const openBtn = div.querySelector(".open-btn");
-  const closeBtn = div.querySelector(".close-btn");
-
-  content.style.display = "none";
-  div.classList.add("collapsed");
-
-  openBtn.addEventListener("click", () => {
-    content.style.display = "block";
-    openBtn.style.display = "none";
-    closeBtn.style.display = "block";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    content.style.display = "none";
-    openBtn.style.display = "block";
-    closeBtn.style.display = "none";
-  });
-
-  L.DomEvent.disableClickPropagation(div);
-
-  return div;
-};
-
-legend.addTo(map);
-
-
-/* -------------------------------------------------------------------------- */
-/*                     FILTRE LÉGENDE                                         */
-/* -------------------------------------------------------------------------- */
-
-document.addEventListener("change", function (e) {
-
-  const checkbox = e.target.closest("input[type=checkbox]");
-  if (!checkbox || !ecsPointLayer) return;
-
-  const theme = checkbox.dataset.theme;
-  const isVisible = checkbox.checked;
-
-  ecsPointLayer.eachLayer(layer => {
-
-    const t = layer.feature.properties.thematique;
-
-    if (t === theme) {
-      if (isVisible) {
-        if (!map.hasLayer(layer)) map.addLayer(layer);
-      } else {
-        if (map.hasLayer(layer)) map.removeLayer(layer);
-      }
-    }
-  });
-
-  if (polygonLayersByTheme[theme]) {
-    if (isVisible) {
-      map.addLayer(polygonLayersByTheme[theme]);
-    } else {
-      map.removeLayer(polygonLayersByTheme[theme]);
-    }
-  }
-
-  updateLayerOrder();
-});
-
-
-/* -------------------------------------------------------------------------- */
 /*                                POLYGONES                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -244,121 +204,26 @@ Promise.all([
 
 
   /* ========================= ECS EPT ========================= */
-  const ecsEptPolygonLayer = new L.geoJSON(ecsEptPolygon, {
+  const ecsEptPolygonLayer = L.geoJSON(ecsEptPolygon, {
 
     style: getPolygonStyle,
 
-    onEachFeature: function (feature, layer) {
-
-      const theme = feature.properties.thematique;
-      layer.defaultStyle = getPolygonStyle(feature, "ept");
-
-      layer.bindPopup(`
-        <b>Nom:</b> ${feature.properties.nom_projet_carto || "Non renseigné"}<br>
-        <b>EPT:</b> ${feature.properties.lib_ept || "Non renseigné"}<br>
-        <b>Description:</b> ${feature.properties.description || "Non renseigné"}<br>
-        <b>Année:</b> ${feature.properties.annee || "Non renseigné"}
-      `);
-
-      layer.on("click", function () {
-
-        if (selectedPolygonLayer) {
-          resetPolygon(selectedPolygonLayer);
-        }
-
-        layer.setStyle({
-          weight: 2,
-          color: "#ffee00",
-          fillOpacity:1
-        });
-
-        selectedPolygonLayer = layer;
-        layer.openPopup();
-      });
-
-      layer.on("popupclose", function () {
-        resetPolygon(layer);
-        selectedPolygonLayer = null;
-      });
-
-      layer.on("mouseover", function () {
-        if (layer !== selectedPolygonLayer) {
-          layer.setStyle({ fillOpacity: 0.8 });
-        }
-      });
-
-      layer.on("mouseout", function () {
-        if (layer !== selectedPolygonLayer) {
-          resetPolygon(layer);
-        }
-      });
-
-      if (!polygonLayersByTheme[theme]) {
-        polygonLayersByTheme[theme] = L.layerGroup();
-      }
-
-      polygonLayersByTheme[theme].addLayer(layer);
+    onEachFeature: (feature, layer) => {
+      configurePolygon(feature, layer, "ept");
     }
+
   });
 
 
   /* ========================= ECS COMMUNES ========================= */
-  const ecsCommunePolygonLayer = new L.geoJSON(ecsCommunePolygon, {
+  const ecsCommunePolygonLayer = L.geoJSON(ecsCommunePolygon, {
 
     style: getPolygonStyle,
 
-    onEachFeature: function (feature, layer) {
-
-      const theme = feature.properties.thematique;
-      layer.defaultStyle = getPolygonStyle(feature, "commune");
-
-      layer.bindPopup(`
-        <b>Nom:</b> ${feature.properties.nom_projet_carto || "Non renseigné"}<br>
-        <b>Ville:</b> ${feature.properties.lib_com || "Non renseigné"}<br>
-        <b>Description:</b> ${feature.properties.description || "Non renseigné"}<br>
-        <b>Année:</b> ${feature.properties.annee || "Non renseigné"}<br>
-
-      `);
-
-      layer.on("click", function () {
-
-        if (selectedPolygonLayer) {
-          resetPolygon(selectedPolygonLayer);
-        }
-
-        layer.setStyle({
-          weight: 2,
-          color: "#ffee00",
-          fillOpacity: 1
-        });
-
-        selectedPolygonLayer = layer;
-        layer.openPopup();
-      });
-
-      layer.on("popupclose", function () {
-        resetPolygon(layer);
-        selectedPolygonLayer = null;
-      });
-
-      layer.on("mouseover", function () {
-        if (layer !== selectedPolygonLayer) {
-          layer.setStyle({ fillOpacity: 0.8 });
-        }
-      });
-
-      layer.on("mouseout", function () {
-        if (layer !== selectedPolygonLayer) {
-          resetPolygon(layer);
-        }
-      });
-
-      if (!polygonLayersByTheme[theme]) {
-        polygonLayersByTheme[theme] = L.layerGroup();
-      }
-
-      polygonLayersByTheme[theme].addLayer(layer);
+    onEachFeature: (feature, layer) => {
+      configurePolygon(feature, layer, "commune");
     }
+
   });
 
   const comPolygonLayer = new L.geoJSON(comPolygon, {
@@ -481,4 +346,126 @@ loadData("data_init/data_suivi_ecs_adresse.geojson")
     }).addTo(map);
 
     updateLayerOrder();
+});
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                LEGEND                                     */
+/* -------------------------------------------------------------------------- */
+
+const legend = L.control({ position: "bottomleft" });
+
+legend.onAdd = function () {
+
+  const div = L.DomUtil.create("div", "legend");
+
+  div.innerHTML = `
+    <div id="legend-content">
+
+      <b class="legend-title">Thématiques</b>
+
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="Deuxième vie des objets">
+        <span class="box" style="background:${getColor("Deuxième vie des objets")}"></span>
+        Deuxième vie des objets
+      </label>
+
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="BTP Centre de réemploi de matériaux du BTP">
+        <span class="box" style="background:${getColor("BTP Centre de réemploi de matériaux du BTP")}"></span>
+        Réemploi BTP
+      </label>
+
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="BTP Construction et aménagement circulaire">
+        <span class="box" style="background:${getColor("BTP Construction et aménagement circulaire")}"></span>
+        Construction circulaire
+      </label>
+
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="BTP Terres végétales recyclées">
+        <span class="box" style="background:${getColor("BTP Terres végétales recyclées")}"></span>
+        Terres végétales
+      </label>
+
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="Alimentation et biodéchets">
+        <span class="box" style="background:${getColor("Alimentation et biodéchets")}"></span>
+        Alimentation / biodéchets
+      </label>
+
+    </div>
+
+    <button class="legend-btn open-btn">
+      <img src="image/legend.svg" />
+    </button>
+
+    <button class="legend-btn close-btn" style="display:none;">
+      Fermer
+    </button>
+  `;
+
+  const content = div.querySelector("#legend-content");
+  const openBtn = div.querySelector(".open-btn");
+  const closeBtn = div.querySelector(".close-btn");
+
+  content.style.display = "none";
+  div.classList.add("collapsed");
+
+  openBtn.addEventListener("click", () => {
+    content.style.display = "block";
+    openBtn.style.display = "none";
+    closeBtn.style.display = "block";
   });
+
+  closeBtn.addEventListener("click", () => {
+    content.style.display = "none";
+    openBtn.style.display = "block";
+    closeBtn.style.display = "none";
+  });
+
+  L.DomEvent.disableClickPropagation(div);
+
+  return div;
+};
+
+legend.addTo(map);
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                     FILTRE LÉGENDE                                         */
+/* -------------------------------------------------------------------------- */
+
+document.addEventListener("change", function (e) {
+
+  const checkbox = e.target.closest("input[type=checkbox]");
+  if (!checkbox || !ecsPointLayer) return;
+
+  const theme = checkbox.dataset.theme;
+  const isVisible = checkbox.checked;
+
+  ecsPointLayer.eachLayer(layer => {
+
+    const t = layer.feature.properties.thematique;
+
+    if (t === theme) {
+      if (isVisible) {
+        if (!map.hasLayer(layer)) map.addLayer(layer);
+      } else {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+      }
+    }
+  });
+
+  if (polygonLayersByTheme[theme]) {
+    if (isVisible) {
+      map.addLayer(polygonLayersByTheme[theme]);
+    } else {
+      map.removeLayer(polygonLayersByTheme[theme]);
+    }
+  }
+
+  updateLayerOrder();
+});
