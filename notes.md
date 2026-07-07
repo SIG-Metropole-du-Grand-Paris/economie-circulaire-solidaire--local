@@ -38,7 +38,10 @@ Deux possibilités :
 
 --> Comment représenter les informations de chaque projet du tableau de données?
 
+
 --> Choisir les colonnées pertinentes
+--> ajouter colonne description_carto
+--> type d'aide à ajouter
 
 ### Popup (fenêtre)
 
@@ -52,3 +55,11 @@ Deux possibilités :
 
 Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
+--> ajouter retour à zoom initial
+
+
+--> verifier ligne 43 viry chatillon
+
+--> ajouter barre de recherche pour filtrer par territoire
+
+--> adapter la charte en se basant sur la charte Trophées
