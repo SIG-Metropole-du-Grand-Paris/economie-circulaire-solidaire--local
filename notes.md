@@ -55,11 +55,17 @@ Deux possibilités :
 
 Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
---> ajouter retour à zoom initial
+
+### A FAIRE
 
 
---> verifier ligne 43 viry chatillon
+-->  [X] Ajouter retour à zoom initial
 
---> ajouter barre de recherche pour filtrer par territoire
 
---> adapter la charte en se basant sur la charte Trophées
+--> [X] Verifier ligne 43 viry chatillon --> effectivement la ligne avait disparu car territoire_concerne != de la commune
+
+--> [] ajouter barre de recherche pour filtrer par territoire
+
+--> [] adapter la charte en se basant sur la charte Trophées --> mais les couleurs pas vraiment compatibles car les dispositifs sont plus précis que les thématiques ++ besoin d'harmoniser les noms entre Trophées et Suivi des projets financés
+
+--> [] Ajouter les données des Trophées par thématiques 

@@ -3,23 +3,29 @@
 /* -------------------------------------------------------------------------- */
 const BEIGE = "#d7c2a3";
 
+
 async function loadData(chemin) {
   const response = await fetch(chemin);
   return await response.json();
 };
+
+// Fonction de réinitialisation
+function resetMap() {
+    map.setView(initCenter, initZoom);
+}
 
 function getColor(thematique) {
   switch (thematique) {
     case "Deuxième vie des objets":
       return "#f7ab55";
     case "BTP Centre de réemploi de matériaux du BTP":
-      return "#5396a4";
-    case "BTP Construction et aménagement circulaire":
       return "#76499c";
+    case "BTP Construction et aménagement circulaire":
+      return "#3ea2d6";
     case "BTP Terres végétales recyclées":
-      return "#83af78";
+      return "#000000";
     case "Alimentation et biodéchets":
-      return "#931f1d";
+      return "#63b36c";
     default:
       return "#999999";
   }
@@ -144,13 +150,17 @@ function resetPolygon(layer) {
 }
 
 
+
 /* -------------------------------------------------------------------------- */
 /*                                MAP                                         */
 /* -------------------------------------------------------------------------- */
 
+const initCenter = [48.86110101269274, 2.3318481445312504];
+const initZoom = 11;
+
 const map = L.map("idMAP", {
   zoomControl: false
-}).setView([48.86110101269274, 2.3318481445312504], 11);
+}).setView(initCenter, initZoom);
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: "&copy; OpenStreetMap"
@@ -158,6 +168,39 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
 
 L.control.scale({ position: "bottomright", imperial: false }).addTo(map);
 L.control.zoom({ position: "topright" }).addTo(map);
+
+// BOUTON HOME
+
+const HomeControl = L.Control.extend({
+  options: {
+    position: "topright"
+  },
+
+  onAdd: function () {
+    const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+
+    const button = L.DomUtil.create("a", "", container);
+    button.href = "#";
+    button.title = "Vue initiale";
+    button.innerHTML = '<img src="image/recenter.svg" alt="Réinitialiser le zoom">';
+
+    L.DomEvent.disableClickPropagation(container);
+
+    L.DomEvent.on(button, "click", function (e) {
+      L.DomEvent.preventDefault(e);
+      map.flyTo(initCenter, initZoom, {
+        duration: 1
+      });
+    });
+
+    return container;
+  }
+});
+
+map.addControl(new HomeControl());
+
+
+
 
 const patternCache = {};
 
