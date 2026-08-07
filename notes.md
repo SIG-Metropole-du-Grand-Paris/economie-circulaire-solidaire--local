@@ -70,6 +70,29 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [] Ajouter les données des Trophées par thématiques 
 
---> [] Mettre à jour les données
+--> [X] Mettre à jour les données
 
 --> [] Choisir une méthode de publication : GitHub ou en local
+
+--> [] Ajouter des variables dans les étiquettes (type de financement)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

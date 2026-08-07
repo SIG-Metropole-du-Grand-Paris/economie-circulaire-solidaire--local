@@ -31,6 +31,44 @@ function getColor(thematique) {
   }
 };
 
+
+// Récupérer les bonnes images pour les Trophées
+function getTropheeIcon(thematique, taille = 24) {
+
+  let fichier;
+
+  switch (thematique) {
+
+    case "Deuxième vie":
+      fichier = "PictogrammeTrophee_1.svg";
+      break;
+
+    case "Achats publics":
+      fichier = "PictogrammeTrophee_2.svg";
+      break;
+
+    case "Bâtiment et aménagement":
+      fichier = "PictogrammeTrophee_3.svg";
+      break;
+
+    case "Alimentation et biodéchets":
+      fichier = "PictogrammeTrophee_4.svg";
+      break;
+
+    default:
+      fichier = "PictogrammeTrophee_1.svg";
+  }
+
+  return L.icon({
+    iconUrl: "image/" + fichier,
+    iconSize: [taille, taille],
+    iconAnchor: [taille / 2, taille / 2],
+    popupAnchor: [0, -taille / 2]
+  });
+}
+
+
+
 function updateLayerOrder() {
   if (ecsPointLayer) ecsPointLayer.bringToFront();
 };
@@ -236,6 +274,9 @@ map.getPane("adminPane").style.zIndex = 450;
 map.createPane("ecsPointPane");
 map.getPane("ecsPointPane").style.zIndex = 650;
 
+map.createPane("tropheePane");
+map.getPane("tropheePane").style.zIndex = 650;
+
 /* -------------------------------------------------------------------------- */
 /*                              VARIABLES                                     */
 /* -------------------------------------------------------------------------- */
@@ -243,6 +284,9 @@ map.getPane("ecsPointPane").style.zIndex = 650;
 let ecsPointLayer = null;
 
 let selectedPointLayer = null;
+
+let selectedTropheeLayer = null;
+
 let selectedPolygonLayer = null;
 
 let polygonLayersByTheme = {};
@@ -419,6 +463,152 @@ loadData("data_init/data_suivi_ecs_adresse.geojson")
 
     updateLayerOrder();
 });
+
+
+// DONNEES DES TROPHEES
+loadData("data_init/trophees_ecs_adresse.geojson")
+.then(data => {
+
+  tropheePointLayer = L.geoJSON(data, {
+
+    pointToLayer: function (feature, latlng) {
+
+      return L.marker(latlng, {
+
+        pane: "tropheePane",
+
+        icon: getTropheeIcon(
+          feature.properties.thematique,
+          24
+        )
+
+      });
+
+    },
+
+    onEachFeature: function (feature, layer) {
+
+      layer.bindPopup(`
+        <b>Nom:</b> ${feature.properties.nom_projet_carto}<br>
+        <b>Ville:</b> ${feature.properties.lib_com}<br>
+        <b>Description:</b> ${feature.properties.description}<br>
+        <b>Année:</b> ${feature.properties.annee}<br>
+        <b>Adresse:</b> ${feature.properties.adresse}
+      `);
+
+
+      // --------------------------------
+      // MOUSEOVER
+      // --------------------------------
+
+      layer.on("mouseover", function () {
+
+        if (layer !== selectedTropheeLayer) {
+
+          layer.setIcon(
+            getTropheeIcon(
+              feature.properties.thematique,
+              32
+            )
+          );
+
+        }
+
+      });
+
+
+      // --------------------------------
+      // MOUSEOUT
+      // --------------------------------
+
+      layer.on("mouseout", function () {
+
+        if (layer !== selectedTropheeLayer) {
+
+          layer.setIcon(
+            getTropheeIcon(
+              feature.properties.thematique,
+              24
+            )
+          );
+
+        }
+
+      });
+
+
+      // --------------------------------
+      // CLICK
+      // --------------------------------
+
+      layer.on("click", function () {
+
+        // Désélectionner l'ancien trophée
+        if (
+          selectedTropheeLayer &&
+          selectedTropheeLayer !== layer
+        ) {
+
+          const ancienneThematique =
+            selectedTropheeLayer.feature.properties.thematique;
+
+          selectedTropheeLayer.setIcon(
+            getTropheeIcon(
+              ancienneThematique,
+              24
+            )
+          );
+
+        }
+
+        // Agrandir le trophée cliqué
+        layer.setIcon(
+          getTropheeIcon(
+            feature.properties.thematique,
+            32
+          )
+        );
+
+        // Enregistrer le trophée sélectionné
+        selectedTropheeLayer = layer;
+
+        // Ouvrir le popup
+        layer.openPopup();
+
+      });
+
+
+      // --------------------------------
+      // FERMETURE DU POPUP
+      // --------------------------------
+
+      layer.on("popupclose", function () {
+
+        // Si ce trophée est bien celui qui était sélectionné
+        if (selectedTropheeLayer === layer) {
+
+          layer.setIcon(
+            getTropheeIcon(
+              feature.properties.thematique,
+              24
+            )
+          );
+
+          selectedTropheeLayer = null;
+
+        }
+
+      });
+
+    }
+
+  }).addTo(map);
+
+  updateLayerOrder();
+
+});
+
+
 
 
 
