@@ -26,10 +26,36 @@ function getColor(thematique) {
       return "#363ea5";
     case "Alimentation et biodéchets":
       return "#63b36c";
+    case "Achats publics":
+      return "#b74e93";
     default:
       return "#999999";
   }
 };
+
+function normalizeThematique(thematique) {
+
+  switch (thematique) {
+
+    case "Deuxième vie":
+      return "Deuxième vie des objets";
+
+    case "Bâtiment et aménagement":
+    case "BTP Construction et aménagement circulaire":
+    case "Construction circulaire":
+      return "Construction circulaire";
+
+    case "Alimentation et biodéchets":
+      return "Alimentation et biodéchets";
+
+    case "Achats publics":
+      return "Achats publics";
+
+    default:
+      return thematique;
+  }
+
+}
 
 
 // Récupérer les bonnes images pour les Trophées
@@ -70,8 +96,16 @@ function getTropheeIcon(thematique, taille = 24) {
 
 
 function updateLayerOrder() {
-  if (ecsPointLayer) ecsPointLayer.bringToFront();
-};
+
+  if (ecsPointLayer) {
+    ecsPointLayer.bringToFront();
+  }
+
+  if (tropheePointLayer) {
+    tropheePointLayer.bringToFront();
+  }
+
+}
 
 function resetSelection() {
   if (selectedPointLayer) {
@@ -282,6 +316,8 @@ map.getPane("tropheePane").style.zIndex = 650;
 /* -------------------------------------------------------------------------- */
 
 let ecsPointLayer = null;
+
+let tropheePointLayer = null;
 
 let selectedPointLayer = null;
 
@@ -657,6 +693,12 @@ legend.onAdd = function () {
         Alimentation / biodéchets
       </label>
 
+      <label class="legend-item">
+        <input type="checkbox" checked data-theme="Achats publics">
+        <span class="box" style="background:${getColor("Achats publics")}"></span>
+        Achats publics
+      </label>
+
     </div>
 
     <button class="legend-btn open-btn">
@@ -699,35 +741,75 @@ legend.addTo(map);
 /* -------------------------------------------------------------------------- */
 /*                     FILTRE LÉGENDE                                         */
 /* -------------------------------------------------------------------------- */
-
 document.addEventListener("change", function (e) {
 
   const checkbox = e.target.closest("input[type=checkbox]");
-  if (!checkbox || !ecsPointLayer) return;
+  if (!checkbox) return;
 
   const theme = checkbox.dataset.theme;
   const isVisible = checkbox.checked;
 
-  ecsPointLayer.eachLayer(layer => {
 
-    const t = layer.feature.properties.thematique;
+  // Filtre des points ECS classiques
+  if (ecsPointLayer) {
 
-    if (t === theme) {
-      if (isVisible) {
-        if (!map.hasLayer(layer)) map.addLayer(layer);
-      } else {
-        if (map.hasLayer(layer)) map.removeLayer(layer);
+    ecsPointLayer.eachLayer(layer => {
+
+      const t = normalizeThematique(
+        layer.feature.properties.thematique
+      );
+
+      if (t === normalizeThematique(theme)) {
+
+        if (isVisible) {
+          if (!map.hasLayer(layer)) map.addLayer(layer);
+        } else {
+          if (map.hasLayer(layer)) map.removeLayer(layer);
+        }
+
       }
-    }
-  });
 
+    });
+
+  }
+
+
+  // Filtre des trophées ECS
+  if (tropheePointLayer) {
+
+    tropheePointLayer.eachLayer(layer => {
+
+      const t = normalizeThematique(
+        layer.feature.properties.thematique
+      );
+
+      if (t === normalizeThematique(theme)) {
+
+        if (isVisible) {
+          if (!map.hasLayer(layer)) map.addLayer(layer);
+        } else {
+          if (map.hasLayer(layer)) map.removeLayer(layer);
+        }
+
+      }
+
+    });
+
+  }
+
+
+  // Filtre des polygones
   if (polygonLayersByTheme[theme]) {
+
     if (isVisible) {
       map.addLayer(polygonLayersByTheme[theme]);
     } else {
       map.removeLayer(polygonLayersByTheme[theme]);
     }
+
   }
 
+
   updateLayerOrder();
+
 });

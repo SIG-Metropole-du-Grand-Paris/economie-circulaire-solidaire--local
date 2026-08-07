@@ -68,13 +68,22 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [x] adapter la charte en se basant sur la charte Trophées 
 
---> [] Ajouter les données des Trophées par thématiques 
+--> [] Ajouter les données des Trophées par thématiques + légende du Trophée
 
---> [X] Mettre à jour les données
+--> [X] Mettre à jour les données suivi ECS
 
 --> [] Choisir une méthode de publication : GitHub ou en local
 
 --> [] Ajouter des variables dans les étiquettes (type de financement)
+
+
+### Modif du coté de l'équipe ECS
+
+--> [] Compléter la case "description" du tableau de données
+
+--> [] j'ai simplement ajouté au dessus des données de suivi les données des Trophées, en esperant que s'il y a des points doublons, qu'ils aient la meme adresses
+
+--> [] Harmoniser les noms des thématiques et ce qui pose problème c'est surtout "BTP Construction et aménagement circulaire" qui s'appelle aussi "Bâtiment et aménagement" que l'on nomme dans le légende "Construction circulaire"
 
 
 
