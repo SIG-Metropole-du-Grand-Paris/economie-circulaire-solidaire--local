@@ -19,11 +19,11 @@ function getColor(thematique) {
     case "Deuxième vie des objets":
       return "#f7ab55";
     case "BTP Centre de réemploi de matériaux du BTP":
-      return "#76499c";
+      return "#a567dc";
     case "BTP Construction et aménagement circulaire":
       return "#3ea2d6";
     case "BTP Terres végétales recyclées":
-      return "#000000";
+      return "#363ea5";
     case "Alimentation et biodéchets":
       return "#63b36c";
     default:
@@ -114,6 +114,7 @@ function configurePolygon(feature, layer, type) {
   const center = layer.getBounds().getCenter();
 
   const marker = L.circleMarker(center, {
+    pane: "ecsPointPane",
     radius:3.5,
     fillColor: "#ffffff",
     color: getColor(theme),

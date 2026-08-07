@@ -66,6 +66,10 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [] ajouter barre de recherche pour filtrer par territoire
 
---> [] adapter la charte en se basant sur la charte Trophées --> mais les couleurs pas vraiment compatibles car les dispositifs sont plus précis que les thématiques ++ besoin d'harmoniser les noms entre Trophées et Suivi des projets financés
+--> [x] adapter la charte en se basant sur la charte Trophées 
 
 --> [] Ajouter les données des Trophées par thématiques 
+
+--> [] Mettre à jour les données
+
+--> [] Choisir une méthode de publication : GitHub ou en local
