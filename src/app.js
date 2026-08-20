@@ -165,7 +165,7 @@ function configurePolygon(feature, layer, type) {
   layer.on("mouseover", () => {
     if (layer !== selectedPolygonLayer) {
       layer.setStyle({
-        fillOpacity: 0.8
+        fillOpacity: 1
       });
     }
   });
@@ -205,7 +205,7 @@ function configurePolygon(feature, layer, type) {
 function getPolygonStyle() {
   return {
     fillPattern: getPattern(),
-    fillOpacity: 0.5,
+    fillOpacity: 0.4,
     color: "transparent",
     weight: 0
   };
@@ -215,7 +215,7 @@ function resetPolygon(layer) {
   if (!layer) return;
 
   layer.setStyle({
-    fillOpacity: 0.5,
+    fillOpacity: 0.4,
     color: "transparent",
     weight: 0,
     fillPattern: getPattern()
@@ -281,7 +281,7 @@ function getPattern() {
   if (patternCache["beige"]) return patternCache["beige"];
 
   const pattern = new L.StripePattern({
-    weight: 2,
+    weight: 1,
     spaceWeight: 4,
     color: BEIGE,
     opacity: 1,
@@ -304,12 +304,16 @@ map.getPane("ecsFillPane").style.zIndex = 350;
 map.createPane("adminPane");
 map.getPane("adminPane").style.zIndex = 450;
 
+map.createPane("searchPane");
+map.getPane("searchPane").style.zIndex = 500;
 
 map.createPane("ecsPointPane");
 map.getPane("ecsPointPane").style.zIndex = 650;
 
 map.createPane("tropheePane");
 map.getPane("tropheePane").style.zIndex = 650;
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                              VARIABLES                                     */
@@ -327,6 +331,9 @@ let selectedPolygonLayer = null;
 
 let polygonLayersByTheme = {};
 
+let comPolygonLayer = null;
+
+let eptPolygonLayer = null;
 
 /* -------------------------------------------------------------------------- */
 /*                                POLYGONES                                  */
@@ -369,7 +376,7 @@ Promise.all([
   });
 
 /* ========================= LIMITES ADMINISTRATIVES ========================= */
-  const comPolygonLayer = new L.geoJSON(comPolygon, {
+  comPolygonLayer = new L.geoJSON(comPolygon, {
     pane: "adminPane",
     interactive: false,
     style: {
@@ -380,7 +387,7 @@ Promise.all([
     }
   }).addTo(map);
 
-  const eptPolygonLayer = new L.geoJSON(eptPolygon, {
+  eptPolygonLayer = new L.geoJSON(eptPolygon, {
     pane: "adminPane",
     interactive: false,
     style: {
@@ -647,6 +654,337 @@ loadData("data_init/trophees_ecs_adresse.geojson")
 
 
 
+/* -------------------------------------------------------------------------- */
+/*                         BARRE DE RECHERCHE DE TERRITOIRE                   */
+/* -------------------------------------------------------------------------- */
+
+
+const territorySearch = L.control({
+    position: "topleft"
+});
+
+let selectedTerritoryLayer = null;
+
+
+
+/*--------------------------------- STYLE SELECTION--------------------------------- */
+
+function resetTerritorySelection() {
+
+    if (!selectedTerritoryLayer) return;
+
+    const layer = selectedTerritoryLayer;
+
+    if (layer._territoryType === "commune") {
+
+        layer.setStyle({
+            fillColor: "transparent",
+            fillOpacity: 0,
+            color: "#273f55",
+            weight: 0.5
+        });
+
+    } else if (layer._territoryType === "ept") {
+
+        layer.setStyle({
+            fillColor: "transparent",
+            fillOpacity: 0,
+            color: "#273f55",
+            weight: 1
+        });
+    }
+
+    selectedTerritoryLayer = null;
+}
+
+
+function selectTerritory(layer, type) {
+
+    // Réinitialiser l'ancienne sélection
+    resetTerritorySelection();
+
+    selectedTerritoryLayer = layer;
+    layer._territoryType = type;
+
+    // Style de sélection
+    layer.setStyle({
+        fillColor: "#ffee00",
+        fillOpacity: 0.25,
+        color: "#ffee00",
+        weight: 3
+    });
+
+    // Zoom
+    map.flyToBounds(layer.getBounds(), {
+        padding: [40, 40],
+        maxZoom: type === "commune" ? 14 : 12,
+        duration: 1
+    });
+}
+
+
+
+/*----------------------------- CONTROLE DE RECHERCHE -----------------------------*/
+
+territorySearch.onAdd = function () {
+
+    const div = L.DomUtil.create(
+        "div",
+        "territory-search"
+    );
+
+    div.innerHTML = `
+
+        <div class="territory-search-input-wrapper">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                id="territory-search-input"
+                placeholder="Rechercher une commune ou un EPT..."
+                autocomplete="off"
+            >
+
+            <button
+                id="territory-search-clear"
+                type="button"
+                title="Effacer"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div id="territory-search-results"></div>
+    `;
+
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.disableScrollPropagation(div);
+
+    return div;
+};
+
+
+territorySearch.addTo(map);
+
+
+
+/*------------------------------- ELEMENTS DOM --------------------------------*/
+
+const searchInput = document.getElementById(
+    "territory-search-input"
+);
+
+const searchResults = document.getElementById(
+    "territory-search-results"
+);
+
+const searchClear = document.getElementById(
+    "territory-search-clear"
+);
+
+
+
+/*------------------------------- NORMALISATION --------------------------------*/
+
+function normalizeSearch(value) {
+
+    return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
+
+
+
+/*--------------------------- RECHERCHE DES COMMUNES ---------------------------*/
+
+function searchCommunes(recherche) {
+
+    const resultats = [];
+
+    comPolygonLayer.eachLayer(function (layer) {
+
+        const nom = layer.feature?.properties?.lib_com;
+
+        if (!nom) return;
+
+        const nomNormalise = normalizeSearch(nom);
+
+        if (nomNormalise.includes(recherche)) {
+
+            resultats.push({
+                nom: nom,
+                type: "commune",
+                layer: layer
+            });
+        }
+    });
+
+    return resultats;
+}
+
+
+
+/*------------------------------ RECHERCHE DES EPT ------------------------------*/
+
+function searchEPT(recherche) {
+
+    const resultats = [];
+
+    eptPolygonLayer.eachLayer(function (layer) {
+
+        const nom = layer.feature?.properties?.lib_ept;
+
+        if (!nom) return;
+
+        const nomNormalise = normalizeSearch(nom);
+
+        if (nomNormalise.includes(recherche)) {
+
+            resultats.push({
+                nom: nom,
+                type: "ept",
+                layer: layer
+            });
+        }
+    });
+
+    return resultats;
+}
+
+
+
+/*----------------------------- AFFICHAGE DES RESULTATS -----------------------------*/
+
+function displaySearchResults(resultats) {
+
+    searchResults.innerHTML = "";
+
+    resultats
+        .sort(function (a, b) {
+
+            return a.nom.localeCompare(
+                b.nom,
+                "fr",
+                {
+                    sensitivity: "base"
+                }
+            );
+        })
+        .slice(0, 10)
+        .forEach(function (resultat) {
+
+            const item = document.createElement("div");
+
+            item.className = "territory-search-result";
+
+            item.innerHTML = `
+                <span class="result-name">
+                    ${resultat.nom}
+                </span>
+
+                <span class="result-type">
+                    ${resultat.type === "commune"
+                        ? "Commune"
+                        : "EPT"}
+                </span>
+            `;
+
+
+            item.addEventListener("click", function () {
+
+                selectTerritory(
+                    resultat.layer,
+                    resultat.type
+                );
+
+                searchInput.value = resultat.nom;
+
+                searchResults.innerHTML = "";
+
+                searchResults.style.display = "none";
+            });
+
+
+            searchResults.appendChild(item);
+        });
+
+
+    /* Aucun résultat */
+
+    if (resultats.length === 0) {
+
+        searchResults.innerHTML = `
+            <div class="territory-search-no-result">
+                Aucun résultat
+            </div>
+        `;
+    }
+
+
+    searchResults.style.display = "block";
+}
+
+
+
+/*------------------------------- RECHERCHE --------------------------------*/
+
+searchInput.addEventListener("input", function () {
+
+    const recherche = normalizeSearch(this.value);
+
+    searchResults.innerHTML = "";
+
+    // Pas de recherche avec moins de 2 caractères
+    if (recherche.length < 2) {
+
+        searchResults.style.display = "none";
+
+        return;
+    }
+
+
+    // Recherche simultanée commune + EPT
+    const resultatsCommunes = searchCommunes(recherche);
+
+    const resultatsEPT = searchEPT(recherche);
+
+    const resultats = [
+        ...resultatsCommunes,
+        ...resultatsEPT
+    ];
+
+
+    displaySearchResults(resultats);
+});
+
+
+
+/*------------------------------- BOUTON EFFACER -------------------------------*/
+
+searchClear.addEventListener("click", function () {
+
+    searchInput.value = "";
+
+    searchResults.innerHTML = "";
+
+    searchResults.style.display = "none";
+
+    resetTerritorySelection();
+
+    map.flyTo(initCenter, initZoom, {
+        duration: 1
+    });
+
+    searchInput.focus();
+});
+
+
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                                LEGEND                                     */
@@ -661,7 +999,7 @@ legend.onAdd = function () {
   div.innerHTML = `
     <div id="legend-content">
 
-      <b class="legend-title">Thématiques</b>
+      <b class="legend-title">Les projets par thématiques</b>
 
       <label class="legend-item">
         <input type="checkbox" checked data-theme="Deuxième vie des objets">
@@ -698,6 +1036,11 @@ legend.onAdd = function () {
         <span class="box" style="background:${getColor("Achats publics")}"></span>
         Achats publics
       </label>
+
+      <div class="legend-laureat">
+        <img src="image/PictogrammeTrophee_9.svg" alt="Projet lauréat">
+        <span>Projet lauréat</span>
+      </div>
 
     </div>
 

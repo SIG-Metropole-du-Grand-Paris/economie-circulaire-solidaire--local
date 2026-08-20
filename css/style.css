@@ -9,7 +9,222 @@ html, body {
 	width: 100%;
 }
 
-/* ------------------ LEGENDE ------------------ */ 
+
+/* -------------------------------------------------------------------------- */
+/*                         BARRE DE RECHERCHE DE TERRITOIRE                   */
+/* -------------------------------------------------------------------------- */
+
+
+/*----------------------------- CONTENEUR ------------------------------------*/
+
+.territory-search {
+    width: 320px;
+
+    background: white;
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+}
+
+
+
+/*----------------------------- BARRE DE SAISIE -------------------------------*/
+
+.territory-search-input-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    height: 42px;
+}
+
+
+.search-icon {
+    display: flex;
+
+    width: 38px;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #273f55;
+
+    font-size: 21px;
+}
+
+
+#territory-search-input {
+
+    flex: 1;
+
+    height: 100%;
+
+    padding: 0 36px 0 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #273f55;
+
+    font-family: inherit;
+
+    font-size: 14px;
+}
+
+
+#territory-search-input::placeholder {
+    color: #777;
+}
+
+
+
+/*----------------------------- BOUTON EFFACER -------------------------------*/
+
+#territory-search-clear {
+
+    position: absolute;
+
+    right: 8px;
+
+    width: 25px;
+    height: 25px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #777;
+
+    font-size: 20px;
+
+    line-height: 20px;
+
+    cursor: pointer;
+}
+
+
+#territory-search-clear:hover {
+
+    background: #eeeeee;
+
+    color: #273f55;
+}
+
+
+
+/*----------------------------- RESULTATS ------------------------------------*/
+
+#territory-search-results {
+
+    display: none;
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+    border-top: 1px solid #eeeeee;
+}
+
+
+.territory-search-result {
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 42px;
+
+    padding: 0 12px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    background: white;
+
+    cursor: pointer;
+}
+
+
+.territory-search-result:hover {
+
+    background: #f3f3f3;
+}
+
+
+.result-name {
+
+    flex: 1;
+
+    color: #273f55;
+
+    font-size: 14px;
+}
+
+
+.result-type {
+
+    margin-left: 10px;
+
+    padding: 3px 7px;
+
+    border-radius: 10px;
+
+    background: #eeeeee;
+
+    color: #666;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+}
+
+
+
+/*----------------------------- AUCUN RESULTAT -------------------------------*/
+
+.territory-search-no-result {
+
+    padding: 12px;
+
+    color: #777;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 LEGENDE                                    */
+/* -------------------------------------------------------------------------- */
+
+
+.legend-item{
+  font-family: "Sen-Regular", sans-serif;
+  font-size: 12px;
+  color: #273f55;
+}
+
+
+.legend-laureat {
+  font-family: "Sen-Regular", sans-serif;
+  font-size: 12px;
+  color: #273f55;
+  margin-bottom: 2px;
+}
+
+
 .legend {
   font-family: "Sen-Regular", sans-serif !important;
   font-size: 20px;
@@ -22,7 +237,7 @@ html, body {
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0px;
 }
 
 .legend div {
@@ -52,8 +267,35 @@ html, body {
   font-size: 16px;
   font-weight: 700;
   color: #273f55;
-  margin-bottom: 6px;
+  margin: 0 0 25px 0 !important;
+  padding: 0;
+  line-height: 1.1;
 }
+
+
+.legend-laureat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+
+}
+
+.legend-laureat img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.legend-laureat span {
+  font-family: "Sen-Regular", sans-serif;
+  font-size: 12px;
+  color: #273f55;
+  font-weight: normal;
+  line-height: normal;
+}
+
 
 /* ------------------ BOUTON DE LA LEGENDE ------------------ */ 
 .legend-btn {
@@ -116,13 +358,13 @@ html, body {
   transform: scale(0.95);
 }
 
-.legend-item {
+/*.legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 6px;
   font-size: 12px;
-}
+} */
 
 .legend-item input {
   cursor: pointer;

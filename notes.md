@@ -79,7 +79,7 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 ### Modif du coté de l'équipe ECS
 
---> [] Compléter la case "description" du tableau de données
+--> [] Compléter la case "description" du tableau de données (surtout pour les Trophées)
 
 --> [] j'ai simplement ajouté au dessus des données de suivi les données des Trophées, en esperant que s'il y a des points doublons, qu'ils aient la meme adresses
 
