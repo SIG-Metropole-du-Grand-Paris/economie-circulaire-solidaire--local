@@ -22,17 +22,15 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 - Carte interactive dynamique
 - Affichage de couches de données géographiques
 - Consultation d’informations attributaires
-- Filtrage des données selon différents critères
-- Exploitation de jeux de données SIG (GeoJSON, CSV, etc.)
+- Cherche par commune ou EPT
 
 ---
 
 ## 🧰 Technologies utilisées
 
 - HTML5 / CSS3 / JavaScript
-- Librairie cartographique (ex : Leaflet / OpenLayers)
-- Traitement de données géographiques (GeoJSON, CSV)
-- Architecture web statique
+- Librairie cartographique : Leaflet / OpenLayers
+- Traitement de données géographiques avec R 
 
 ---
 

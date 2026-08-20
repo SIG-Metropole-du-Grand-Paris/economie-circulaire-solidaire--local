@@ -64,17 +64,21 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [X] Verifier ligne 43 viry chatillon --> effectivement la ligne avait disparu car territoire_concerne != de la commune
 
---> [] ajouter barre de recherche pour filtrer par territoire
+--> [X] ajouter barre de recherche pour filtrer par territoire
 
---> [x] adapter la charte en se basant sur la charte Trophées 
+--> [X] adapter la charte en se basant sur la charte Trophées 
 
---> [] Ajouter les données des Trophées par thématiques + légende du Trophée
+--> [X] Ajouter les données des Trophées par thématiques + légende du Trophée
 
 --> [X] Mettre à jour les données suivi ECS
 
---> [] Choisir une méthode de publication : GitHub ou en local
+--> [] Filtrer les variables des données ECS ; retirer les montants?
 
---> [] Ajouter des variables dans les étiquettes (type de financement)
+--> [X] Ajouter des variables dans les étiquettes (type de financement)
+
+--> [] Mettre à jour le README
+
+--> [] Publier la carte au grand public
 
 
 ### Modif du coté de l'équipe ECS
@@ -84,6 +88,8 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 --> [] j'ai simplement ajouté au dessus des données de suivi les données des Trophées, en esperant que s'il y a des points doublons, qu'ils aient la meme adresses
 
 --> [] Harmoniser les noms des thématiques et ce qui pose problème c'est surtout "BTP Construction et aménagement circulaire" qui s'appelle aussi "Bâtiment et aménagement" que l'on nomme dans le légende "Construction circulaire"
+
+--> [] Pour les données Throphées il n'y a pas d'étiquettes pour préciser le type d'aide donc pas harmonisé avec les autres popup, pas grave?
 
 
 

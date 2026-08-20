@@ -135,7 +135,8 @@ function configurePolygon(feature, layer, type) {
     <b>Nom :</b> ${feature.properties.nom_projet_carto || "Non renseigné"}<br>
     ${territoire}<br>
     <b>Description :</b> ${feature.properties.description || "Non renseigné"}<br>
-    <b>Année :</b> ${feature.properties.annee || "Non renseigné"}
+    <b>Année :</b> ${feature.properties.annee || "Non renseigné"} <br>
+    <b>Type d'aide:</b> ${feature.properties.type_aide || "Non renseigné"}
   `);
 
   // ---------- Sélection ----------
@@ -455,7 +456,8 @@ loadData("data_init/data_suivi_ecs_adresse.geojson")
           <b>Ville:</b> ${feature.properties.lib_com}<br>
           <b>Description:</b> ${feature.properties.description}<br>
           <b>Année:</b> ${feature.properties.annee}<br>
-          <b>Adresse:</b> ${feature.properties.adresse}
+          <b>Adresse:</b> ${feature.properties.adresse}<br>
+          <b>Type d'aide:</b> ${feature.properties.type_aide}
         `);
 
         layer.on("mouseover", function () {
