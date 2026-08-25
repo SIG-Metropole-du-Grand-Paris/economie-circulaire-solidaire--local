@@ -1063,15 +1063,19 @@ legend.onAdd = function () {
   div.classList.add("collapsed");
 
   openBtn.addEventListener("click", () => {
-    content.style.display = "block";
-    openBtn.style.display = "none";
-    closeBtn.style.display = "block";
+      content.style.display = "block";
+      openBtn.style.display = "none";
+      closeBtn.style.display = "block";
+
+      div.classList.remove("collapsed");
   });
 
   closeBtn.addEventListener("click", () => {
-    content.style.display = "none";
-    openBtn.style.display = "block";
-    closeBtn.style.display = "none";
+      content.style.display = "none";
+      openBtn.style.display = "block";
+      closeBtn.style.display = "none";
+
+      div.classList.add("collapsed");
   });
 
   L.DomEvent.disableClickPropagation(div);

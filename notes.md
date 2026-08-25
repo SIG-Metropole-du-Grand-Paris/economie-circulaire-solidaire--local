@@ -76,6 +76,8 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [X] Ajouter des variables dans les étiquettes (type de financement)
 
+--> [] Styliser la légende
+
 --> [] Mettre à jour le README
 
 --> [] Publier la carte au grand public
