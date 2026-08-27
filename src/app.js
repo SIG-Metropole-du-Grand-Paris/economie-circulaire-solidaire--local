@@ -1001,8 +1001,15 @@ legend.onAdd = function () {
   div.innerHTML = `
     <div id="legend-content">
 
+      <!-- PROJET LAURÉAT -->
+      <div class="legend-laureat">
+        <img src="image/PictogrammeTrophee_9.svg" alt="Projet lauréat">
+        <span>Projet lauréat</span>
+      </div>
+
       <b class="legend-title">Les projets par thématiques</b>
 
+      <!-- PROJET thématique -->
       <label class="legend-item">
         <input type="checkbox" checked data-theme="Deuxième vie des objets">
         <span class="box" style="background:${getColor("Deuxième vie des objets")}"></span>
@@ -1039,10 +1046,13 @@ legend.onAdd = function () {
         Achats publics
       </label>
 
-      <div class="legend-laureat">
-        <img src="image/PictogrammeTrophee_9.svg" alt="Projet lauréat">
-        <span>Projet lauréat</span>
+      <div class="legend-item legend-territoire">
+        <span class="hachure">
+          <span class="hachure-point"></span>
+        </span>
+        <span>Certain projets ne sont pas localisables précisement car concernent un territoire dans son ensemble. Ces projets sont représentés par un point au centre de la commune ou de l'EPT.</span>
       </div>
+
 
     </div>
 

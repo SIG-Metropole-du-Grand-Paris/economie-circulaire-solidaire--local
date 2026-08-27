@@ -209,12 +209,9 @@ html, body {
 /*                                 LEGENDE                                    */
 /* -------------------------------------------------------------------------- */
 
-.legend-laureat {
-  font-family: "Sen-Regular", sans-serif;
-  font-size: 12px;
-  color: #273f55;
-  margin-bottom: 2px;
-}
+
+
+
 
 
 .legend {
@@ -284,20 +281,67 @@ html, body {
   margin-bottom: 4px;
 }
 
-
-.legend-laureat {
+/* Légende hachures*/
+.legend-territoire {
   display: flex;
   align-items: center;
   gap: 8px;
+  line-height: 1;
+  color: #273f559a;
+}
+
+.hachure {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  border: 1px solid #d7c2a3;
+
+  background: repeating-linear-gradient(
+    45deg,
+    #d7c2a3 0px,
+    #d7c2a3 1px,
+    transparent 1px,
+    transparent 5px
+  );
+
+  box-sizing: border-box;
+}
+
+.hachure-point {
+  width: 6px;
+  height: 6px;
+
+  background: #d7c2a3;
+
+  border-radius: 50%;
+
+  display: block;
+}
+
+.legend-laureat {
+  font-family: "Sen-Regular", sans-serif;
+  font-size: 12px;
+  color: #273f55;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   margin-top: 8px;
-  padding-top: 8px;
+  margin-bottom: 10px;
 
-    /* espace entre les checkbox et "Projet lauréat" */
-  padding-top: 8px;
+  padding-bottom: 10px;
 
-  /* IMPORTANT : espace sous Projet lauréat */
-  padding-bottom: 18px;
-  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .legend-laureat img {
@@ -313,7 +357,6 @@ html, body {
   font-weight: normal;
   line-height: normal;
 }
-
 
 /* ------------------ BOUTON DE LA LEGENDE ------------------ */ 
 .legend-btn {
