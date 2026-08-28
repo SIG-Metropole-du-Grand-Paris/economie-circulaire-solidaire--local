@@ -78,9 +78,25 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [] Styliser la légende et ajouter les hachures
 
---> [] Mettre à jour le README
+--> [X] Mettre à jour le README/Licence
 
 --> [] Publier la carte au grand public
+
+--> [] ativer et desactiver les trophees
+
+--> [] trouver autre fond de carte pour zoom 
+
+-->[]  Voir s'il est possible de mettre les hachures BTP en violet
+
+--> []  changer couleur trophées entre jaune et rose pour la carte TROPHEES
+
+Légende : Projet lauréat des Trophées de l'économie circulaire et solidaire + pareil titre (ajout solidaire) > Tanya
+Harmoniser les thématiques construction dans le tableau de suivi > Eva 
+Trophées : compléter les descriptions > Eva 
+Fond à changer pour + de détails en zoom > Tanya
+Echanger couleur achats et deuxième vie sur la carte statique Trophées > Tanya
+Relance Pascal tablette interne > Eva 
+Petit mail récap sur les enjeux open data pour échange avec David > Tanya / José
 
 
 ### Modif du coté de l'équipe ECS
