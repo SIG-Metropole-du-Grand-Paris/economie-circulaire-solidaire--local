@@ -77,16 +77,10 @@ Cet outil est destiné à :
 
 Projet développé par le service SIG de la Métropole du Grand Paris dans un cadre d’analyse et de suivi territorial des politiques publiques liées à l’économie circulaire et solidaire.
 
-
 ---
-
-## Licence
-
-### Code
-
-Le code source de ce projet est distribué sous licence MIT. Voir le fichier [LICENSE](LICENSE).
 
 ### Données
 
-Les données utilisées dans ce projet sont soumises aux conditions de licence et de réutilisation de leurs sources respectives.
+Les données utilisées dans ce projet proviennent de la Métropole du Grand Paris concernant les projets d'économie circulaire du 08/2026. 
+Les limites administratives des communes et des Établissements Publics Territoriaux proviennent de la base ADMIN EXPRESS de l'IGN 2026.
 
