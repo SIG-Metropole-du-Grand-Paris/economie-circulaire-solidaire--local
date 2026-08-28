@@ -237,7 +237,7 @@ const map = L.map("idMAP", {
 }).setView(initCenter, initZoom);
 
 L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-  attribution: "&copy; OpenStreetMap"
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>  Données : Métropole du Grand Paris'
 }).addTo(map);
 
 L.control.scale({ position: "bottomright", imperial: false }).addTo(map);

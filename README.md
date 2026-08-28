@@ -1,5 +1,11 @@
 # Carte interactive – Suivi des dispositifs d’économie circulaire et solidaire dans la Métropole du Grand Paris
 
+## Aperçu
+
+![Aperçu de la carte](image/screen.PNG)
+
+
+
 ## Contexte
 
 Ce projet s’inscrit dans le cadre du suivi et de la valorisation des dispositifs liés à l’économie circulaire et solidaire à l’échelle territoriale.
