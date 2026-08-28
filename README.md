@@ -1,6 +1,6 @@
 # Carte interactive – Suivi des dispositifs d’économie circulaire et solidaire dans la Métropole du Grand Paris
 
-## 🏛️ Contexte
+## Contexte
 
 Ce projet s’inscrit dans le cadre du suivi et de la valorisation des dispositifs liés à l’économie circulaire et solidaire à l’échelle territoriale.
 
@@ -8,7 +8,7 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 
 ---
 
-## 🎯 Objectifs
+## Objectifs
 
 - Centraliser les données territoriales relatives aux dispositifs de l'économie circulaire
 - Visualiser spatialement les actions et structures associées sur la Métropole du Grand Paris
@@ -17,7 +17,7 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 
 ---
 
-## 🗺️ Fonctionnalités
+## Fonctionnalités
 
 - Carte interactive dynamique
 - Affichage de couches de données géographiques
@@ -26,7 +26,7 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 
 ---
 
-## 🧰 Technologies utilisées
+## Technologies utilisées
 
 - HTML5 / CSS3 / JavaScript
 - Librairie cartographique : Leaflet / OpenLayers / Bootstrap 4.0
@@ -34,7 +34,7 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 APPLICATION/
 │
@@ -48,12 +48,12 @@ APPLICATION/
 
 ---
 
-## ⚙️ Installation et utilisation
+## Installation et utilisation
 
 ### Exécution locale
 Ouvrir simplement le fichier : index.html dans un navigateur web moderne.
 
-## 📊 Utilisation métier
+## Utilisation métier
 
 Cet outil est destiné à :
 
@@ -67,16 +67,20 @@ Cet outil est destiné à :
 
 ---
 
-## 📌 Responsable du projet
+## Responsable du projet
 
 Projet développé par le service SIG de la Métropole du Grand Paris dans un cadre d’analyse et de suivi territorial des politiques publiques liées à l’économie circulaire et solidaire.
 
 
 ---
 
-## 🔖 Licence
+## Licence
 
+### Code
 
-Tous droits réservés. La reproduction ou la modification de ce code est interdite sans autorisation préalable de l'auteur.
+Le code source de ce projet est distribué sous licence MIT. Voir le fichier [LICENSE](LICENSE).
 
+### Données
+
+Les données utilisées dans ce projet sont soumises aux conditions de licence et de réutilisation de leurs sources respectives.
 

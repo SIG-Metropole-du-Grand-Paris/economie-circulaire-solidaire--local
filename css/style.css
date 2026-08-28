@@ -3,11 +3,68 @@ html, body {
 	margin: 0;
 }
 
+/* =========================
+       BARRE SUPÉRIEURE
+========================= */
+
+#topbar {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 70px;
+
+
+background-color: #273f55;
+color: white;
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+padding: 0 25px;
+box-sizing: border-box;
+
+z-index: 2000;
+
+
+}
+
+/* Titre à gauche */
+.topbar-title {
+font-family: 'Sen', sans-serif;
+font-size: 22px;
+font-weight: 600;
+white-space: nowrap;
+}
+
+/* Logo à droite */
+.topbar-logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.topbar-logo img {
+    height: 70px;;
+    width: auto;
+    display: block;
+}
+
+
+
 /* ------------------ CARTE ------------------ */ 
 #idMAP {
-	height: 100%;
-	width: 100%;
+position: absolute;
+top: 70px;
+left: 0;
+right: 0;
+bottom: 0;
 }
+
+
+
+
 
 
 /* -------------------------------------------------------------------------- */
