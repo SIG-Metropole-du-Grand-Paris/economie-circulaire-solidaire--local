@@ -1,4 +1,4 @@
-# Carte interactive – Suivi des dispositifs d’économie circulaire et solidaire
+# Carte interactive – Suivi des dispositifs d’économie circulaire et solidaire dans la Métropole du Grand Paris
 
 ## 🏛️ Contexte
 
@@ -10,8 +10,8 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 
 ## 🎯 Objectifs
 
-- Centraliser les données territoriales relatives aux dispositifs économiques
-- Visualiser spatialement les actions et structures associées
+- Centraliser les données territoriales relatives aux dispositifs de l'économie circulaire
+- Visualiser spatialement les actions et structures associées sur la Métropole du Grand Paris
 - Faciliter l’analyse de l’attractivité économique des territoires
 - Appuyer le pilotage et l’aide à la décision
 
@@ -29,8 +29,8 @@ Il a pour objectif de fournir un outil de visualisation cartographique permettan
 ## 🧰 Technologies utilisées
 
 - HTML5 / CSS3 / JavaScript
-- Librairie cartographique : Leaflet / OpenLayers
-- Traitement de données géographiques avec R 
+- Librairie cartographique : Leaflet / OpenLayers / Bootstrap 4.0
+- Traitement de données géographiques avec R Studio
 
 ---
 
@@ -44,16 +44,7 @@ APPLICATION/
 ├── lib/ # Bibliothèques externes
 ├── image/ # Ressources graphiques
 ├── fonts/ # Polices
-└── data_init/ # Données sensibles (non versionnées)
-
----
-
-
-## 🔐 Données et confidentialité
-
-Certaines données sensibles sont stockées localement et non visibles dans le projet
-
-Ces données ne sont pas publiées ni accessibles via le dépôt Git.
+└── data_init/ # Données
 
 ---
 
@@ -66,31 +57,26 @@ Ouvrir simplement le fichier : index.html dans un navigateur web moderne.
 
 Cet outil est destiné à :
 
-- Services développement économique
-- Services SIG / observation territoriale
+- Services développement économique durable
+- Services SIG 
 - Chargés de mission économie circulaire
 - Décideurs publics
+- Au grand public 
 
 ---
-
-## 🔄 Perspectives d’évolution
-
-- Intégration d’une base de données dynamique
-- Ajout de filtres avancés (thématiques, temporalité, typologie)
-- Export de cartes et rapports
-- Authentification utilisateur
-- Déploiement en ligne sécurisé
 
 ---
 
 ## 📌 Responsable du projet
 
-Projet développé dans un cadre d’analyse et de suivi territorial des politiques publiques liées à l’économie circulaire et solidaire.
+Projet développé par le service SIG de la Métropole du Grand Paris dans un cadre d’analyse et de suivi territorial des politiques publiques liées à l’économie circulaire et solidaire.
+
 
 ---
 
 ## 🔖 Licence
 
-Usage interne ou institutionnel sauf mention contraire.
+
+Tous droits réservés. La reproduction ou la modification de ce code est interdite sans autorisation préalable de l'auteur.
 
 
