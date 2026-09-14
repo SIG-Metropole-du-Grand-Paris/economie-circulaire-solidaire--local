@@ -236,7 +236,7 @@ const map = L.map("idMAP", {
   zoomControl: false
 }).setView(initCenter, initZoom);
 
-L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png?key=cb1_3k1w_1_340b43aca59223a505cd80ed", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>  Données : Métropole du Grand Paris 08/2026 & ADMIN EXPRESS - IGN 2026'
 }).addTo(map);
 
