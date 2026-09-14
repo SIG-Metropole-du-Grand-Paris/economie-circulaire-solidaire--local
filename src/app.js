@@ -5,9 +5,24 @@ const BEIGE = "#d7c2a3";
 
 
 async function loadData(chemin) {
+  console.log("Chargement :", chemin);
+
   const response = await fetch(chemin);
-  return await response.json();
-};
+
+  console.log("Réponse :", response.status, response.url);
+
+  if (!response.ok) {
+    throw new Error(
+      `Impossible de charger ${chemin} — HTTP ${response.status}`
+    );
+  }
+
+  const data = await response.json();
+
+  console.log("GeoJSON chargé :", chemin, data);
+
+  return data;
+}
 
 // Fonction de réinitialisation
 function resetMap() {
