@@ -72,7 +72,7 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [X] Mettre à jour les données suivi ECS
 
---> [] Filtrer les variables des données ECS ; retirer les montants?
+--> [X] Filtrer les variables des données ECS ; retirer les montants?
 
 --> [X] Ajouter des variables dans les étiquettes (type de financement)
 
@@ -82,9 +82,9 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [] Publier la carte au grand public
 
---> [] ativer et desactiver les trophees
+--> [] activer et desactiver les trophees
 
---> [] trouver autre fond de carte pour zoom 
+--> [X] Ajouter une KEY pour un acces limité au fond de carte
 
 -->[]  Voir s'il est possible de mettre les hachures BTP en violet
 
