@@ -80,7 +80,7 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [X] Mettre à jour le README/Licence
 
---> [] Publier la carte au grand public
+--> [X] Publier la carte au grand public
 
 --> [] activer et desactiver les trophees
 
@@ -89,6 +89,8 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 -->[]  Voir s'il est possible de mettre les hachures BTP en violet
 
 --> []  changer couleur trophées entre jaune et rose pour la carte TROPHEES
+
+--> [] Migrer sur GitLab
 
 Légende : Projet lauréat des Trophées de l'économie circulaire et solidaire + pareil titre (ajout solidaire) > Tanya
 Harmoniser les thématiques construction dans le tableau de suivi > Eva 
