@@ -76,7 +76,7 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> [X] Ajouter des variables dans les étiquettes (type de financement)
 
---> [] Styliser la légende et ajouter les hachures
+--> [X] Styliser la légende et ajouter les hachures
 
 --> [X] Mettre à jour le README/Licence
 
@@ -90,7 +90,13 @@ Possibilité d'en faire un export de meilleure qualité qu'une capture d'écran
 
 --> []  changer couleur trophées entre jaune et rose pour la carte TROPHEES
 
---> [] Migrer sur GitLab
+--> [] Migrer sur GitLab et supprimer compte GitHub
+
+--> [X] Titre carte : ajouter solidaire
+
+--> [] filtre ajout et cacher trophées
+ 
+--> [] titre légende "projet lauréat des Trophées de l'Économie c et S"
 
 Légende : Projet lauréat des Trophées de l'économie circulaire et solidaire + pareil titre (ajout solidaire) > Tanya
 Harmoniser les thématiques construction dans le tableau de suivi > Eva 
